@@ -163,15 +163,11 @@ void CircularList<T>::remove(int index)
         DoubleNode<T>* previous = currently->getPrev();       
         DoubleNode<T>* next = currently->getNext();
 
-        previous->setNext(next);
-
-        if(next != NULL)
-        {  
-          next->setPrev(previous);
-        }
-          
-        loc = previous;
-        loc_pos = index - 1;
+        previous->setNext(next);       
+        next->setPrev(previous);
+               
+        loc = next;
+        loc_pos = index;
 
         delete currently;
 
