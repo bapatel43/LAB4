@@ -59,29 +59,33 @@ DoubleNode<T>* CircularList<T>::find(int index)
    //loc_pos is the index that loc currently points to
    //index is the requested index
  
+  
    if (index >= loc_pos)
    {
-        dist_next= (sze-loc_pos + index);   //distance without the bridge (next refs, positive)
-        dist_prev=loc_pos-index;   //distance using the bridge (prev refs, negative)
+      dist_next = index - loc_pos;                                //distance without the bridge (next refs, positive)
+      dist_prev = (sze - loc_pos + index);                             //distance using the bridge (prev refs, negative)
    }
    else
    {
-        dist_prev=loc_pos-index;  //distance without the bridge (prev refs, negative)
-        dist_next= (sze+loc_pos- index);    //distance using the bridge (next refs, positive)
+       
+      dist_prev = (loc_pos - index) * - 1;                               //distance without the bridge (prev refs, negative)
+      dist_next = (sze + loc_pos - index) * - 1;                             //distance using the bridge (next refs, positive)
    }
 
    //DO THIS which distance is smaller?
    //find the minimum distance using absolute value
    //set min_dist to the smaller value, keeping the sign
-	
-	if (dist_next>dist_prev)
-	{
-		min_dist=(dist_prev*-1);
-	}
-	else 
-	{
-		min_dist= dist_next;
-	}
+
+   if(abs(dist_next) > abs(dist_prev))
+   {
+      min_dist = dist_prev;
+   }
+
+   else
+   {
+      min_dist = dist_next;
+   }
+  
 
 
    if (min_dist < 0)  //negative distance means use prev links, counterclockwise
@@ -147,21 +151,29 @@ void CircularList<T>::remove(int index)
       if (sze == 1) //special case
       {
 
-
-
-
-
+        delete loc;
+        loc_pos = 0;
+        
 
       }
       else
       {
-         //use local variables
+        //use local variables
+        DoubleNode<T>* currently = find(index);
+        DoubleNode<T>* previous = currently->getPrev();       
+        DoubleNode<T>* next = currently->getNext();
 
+        previous->setNext(next);
 
+        if(next != NULL)
+        {  
+          next->setPrev(previous);
+        }
+          
+        loc = previous;
+        loc_pos = index - 1;
 
-
-
-
+        delete currently;
 
       }
       sze--;
