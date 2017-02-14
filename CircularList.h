@@ -153,21 +153,23 @@ void CircularList<T>::remove(int index)
 
         delete loc;
         loc_pos = 0;
+        DoubleNode<T>* removeLoc = find(loc_pos);
+        delete removeLoc;
         
 
       }
       else
       {
         //use local variables
-        DoubleNode<T>* currently = find(index);
-        DoubleNode<T>* previous = currently->getPrev();       
+        DoubleNode<T>* previous = find(index - 1);
+        DoubleNode<T>* currently = previous->getNext();       
         DoubleNode<T>* next = currently->getNext();
 
         previous->setNext(next);       
         next->setPrev(previous);
                
-        loc = next;
-        loc_pos = index;
+        loc = previous;
+        loc_pos = index - 1;
 
         delete currently;
 
